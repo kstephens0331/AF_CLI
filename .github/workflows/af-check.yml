@@ -1,0 +1,26 @@
+name: af-check
+on:
+  pull_request:
+    branches: [ main, master ]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      # If your project includes af-cli as a devDependency (recommended):
+      # - name: Build af-cli (if part of monorepo)
+      #   run: npm run build --workspaces --if-present
+
+      - name: Typecheck/Lint/Tests via af check
+        run: npx af check

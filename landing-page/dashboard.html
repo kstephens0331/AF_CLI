@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autopilot CLI - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">Autopilot<span>CLI</span></div>
+            <nav>
+                <a href="#" class="active">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
+                        <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9s-9.75 3.97-9.75 9c0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z" clip-rule="evenodd" />
+                    </svg>
+                    Terminal
+                </a>
+                <a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z" clip-rule="evenodd" />
+                    </svg>
+                    Projects
+                </a>
+                <a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M5.566 4.657A4.505 4.505 0 016.75 4.75h10.5c.41 0 .806.055 1.183.157A3 3 0 0015.75 3h-7.5a3 3 0 00-2.684 1.657zM2.25 12a3 3 0 013-3h13.5a3 3 0 013 3v6a3 3 0 01-3 3H5.25a3 3 0 01-3-3v-6zM5.25 7.5c-.41 0-.806.055-1.184.157A3 3 0 016.75 6h10.5a3 3 0 012.683 1.657A4.505 4.505 0 0018.75 7.5H5.25z" />
+                    </svg>
+                    Billing
+                </a>
+                <a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z" />
+                    </svg>
+                    Team
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="avatar">
+                    <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" alt="User">
+                </div>
+                <div class="user-info">
+                    <strong>John Developer</strong>
+                    <small>john@example.com</small>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Dashboard</h1>
+                <div class="actions">
+                    <button class="btn primary">New Project</button>
+                    <div class="notification">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </div>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Commands Executed</h3>
+                    <div class="value">1,248</div>
+                    <div class="trend up">↑ 12% this week</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Time Saved</h3>
+                    <div class="value">42h</div>
+                    <div class="trend up">↑ 8% this week</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Projects</h3>
+                    <div class="value">7</div>
+                    <div class="trend neutral">→ No change</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Subscription</h3>
+                    <div class="value">Pro</div>
+                    <div class="trend">Renews May 15</div>
+                </div>
+            </div>
+
+            <section class="recent-activity">
+                <h2>Recent Activity</h2>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon success">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Deployed project to production</div>
+                            <div class="activity-meta">
+                                <span class="activity-time">10 minutes ago</span>
+                                <span class="activity-cmd">autopilot deploy --prod</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon warning">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0 1.154 2 1.154 2 2.31 4.002 1.155 2 1.155 2 2.31 4.001 1.154 2 1.154 2 0 4.002-1.155 2-1.155 2-2.31 4.002-1.154 2-4.042 2-5.197 0-1.154-2-1.154-2-2.31-4.002-1.155-2-1.155-2-2.31-4.001-1.154-2-1.154-2 0-4.002 1.155-2 1.155-2 2.31-4.001 1.154-2 4.042-2 5.196 0zM12 15.25a.75.75 0 100-1.5.75.75 0 000 1.5zm.75-4.5a.75.75 0 11-1.5 0v-3a.75.75 0 011.5 0v3z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">File edit required confirmation</div>
+                            <div class="activity-meta">
+                                <span class="activity-time">15 minutes ago</span>
+                                <span class="activity-cmd">autopilot edit src/utils.js</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon success">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Tests completed successfully</div>
+                            <div class="activity-meta">
+                                <span class="activity-time">1 hour ago</span>
+                                <span class="activity-cmd">autopilot test --all</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="view-all">View all activity →</a>
+            </section>
+
+            <section class="quick-terminal">
+                <h2>Quick Terminal</h2>
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="window-controls">
+                            <span class="red"></span>
+                            <span class="yellow"></span>
+                            <span class="green"></span>
+                        </div>
+                        <div class="terminal-title">autopilot</div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="line"><span class="prompt">$</span> <span class="cursor">_</span></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

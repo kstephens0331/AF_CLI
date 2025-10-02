@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(node:*)",
+      "Read(//c/Users/usmc3/OneDrive/Documents/Stephens Code Programs/med-school-project/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

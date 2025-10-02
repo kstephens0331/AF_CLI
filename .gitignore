@@ -1,0 +1,8 @@
+node_modules
+dist
+.af/state
+.af/cache
+.af/backups
+.af/tmp
+.af/staging
+.env

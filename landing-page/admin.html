@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Autopilot CLI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.83/dist/themes/light.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.83/dist/shoelace.js"></script>
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <sl-icon name="shield-lock" style="font-size: 1.5rem; margin-right: 0.75rem;"></sl-icon>
+                <h2>Admin Panel</h2>
+            </div>
+            
+            <nav class="admin-nav">
+                <div class="nav-section">
+                    <h3>Main</h3>
+                    <a href="#" class="nav-link active">
+                        <sl-icon name="speedometer2" slot="prefix"></sl-icon>
+                        Dashboard
+                    </a>
+                    <a href="#" class="nav-link">
+                        <sl-icon name="terminal" slot="prefix"></sl-icon>
+                        System Console
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <h3>Management</h3>
+                    <a href="#" class="nav-link">
+                        <sl-icon name="people" slot="prefix"></sl-icon>
+                        Users
+                    </a>
+                    <a href="#" class="nav-link">
+                        <sl-icon name="folder" slot="prefix"></sl-icon>
+                        Projects
+                    </a>
+                    <a href="#" class="nav-link">
+                        <sl-icon name="plugin" slot="prefix"></sl-icon>
+                        Plugins
+                    </a>
+                    <a href="#" class="nav-link">
+                        <sl-icon name="credit-card" slot="prefix"></sl-icon>
+                        Subscriptions
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <h3>System</h3>
+                    <a href="#" class="nav-link">
+                        <sl-icon name="gear" slot="prefix"></sl-icon>
+                        Settings
+                    </a>
+                    <a href="#" class="nav-link">
+                        <sl-icon name="shield" slot="prefix"></sl-icon>
+                        Security
+                    </a>
+                    <a href="#" class="nav-link">
+                        <sl-icon name="journal-text" slot="prefix"></sl-icon>
+                        Audit Logs
+                    </a>
+                </div>
+            </nav>
+        </aside>
+        
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1>Admin Dashboard</h1>
+                <div class="admin-actions">
+                    <sl-button variant="primary" size="small" pill>
+                        <sl-icon name="plus" slot="prefix"></sl-icon>
+                        Add User
+                    </sl-button>
+                    <sl-button variant="neutral" size="small" pill>
+                        <sl-icon name="download" slot="prefix"></sl-icon>
+                        Export
+                    </sl-button>
+                </div>
+            </header>
+            
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-value">1,842</div>
+                    <div class="stat-label">Total Users</div>
+                    <div class="stat-trend positive">↑ 12.5% this month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">$22,845</div>
+                    <div class="stat-label">Monthly Revenue</div>
+                    <div class="stat-trend positive">↑ 8.3% this month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">1,523</div>
+                    <div class="stat-label">Active Subscriptions</div>
+                    <div class="stat-trend negative">↓ 3.2% this month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">System Health</div>
+                    <div class="stat-trend">All systems operational</div>
+                </div>
+            </div>
+            
+            <section class="admin-section">
+                <div class="section-header">
+                    <h2>Recent Signups</h2>
+                    <sl-input placeholder="Search users" size="small" pill>
+                        <sl-icon name="search" slot="prefix"></sl-icon>
+                    </sl-input>
+                </div>
+                
+                <sl-table hover striped>
+                    <sl-table-column prop="id" label="ID" width="80"></sl-table-column>
+                    <sl-table-column prop="email" label="Email"></sl-table-column>
+                    <sl-table-column prop="plan" label="Plan"></sl-table-column>
+                    <sl-table-column prop="joined" label="Joined"></sl-table-column>
+                    <sl-table-column prop="status" label="Status">
+                        <template>
+                            <sl-badge variant="primary" pill>Active</sl-badge>
+                        </template>
+                    </sl-table-column>
+                    <sl-table-column label="Actions" width="120">
+                        <template>
+                            <sl-icon-button name="gear" label="Settings"></sl-icon-button>
+                            <sl-icon-button name="trash" label="Delete"></sl-icon-button>
+                        </template>
+                    </sl-table-column>
+                </sl-table>
+            </section>
+            
+            <section class="admin-section">
+                <div class="section-header">
+                    <h2>Revenue Analytics</h2>
+                    <sl-select value="30" size="small" pill>
+                        <sl-menu-item value="7">Last 7 Days</sl-menu-item>
+                        <sl-menu-item value="30">Last 30 Days</sl-menu-item>
+                        <sl-menu-item value="90">Last 90 Days</sl-menu-item>
+                    </sl-select>
+                </div>
+                
+                <div class="chart-container">
+                    <!-- Chart would be rendered here with Chart.js -->
+                    <div class="chart-placeholder">
+                        <sl-spinner style="font-size: 2rem;"></sl-spinner>
+                        <p>Loading revenue data...</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="admin-section">
+                <div class="section-header">
+                    <h2>System Controls</h2>
+                </div>
+                
+                <div class="controls-grid">
+                    <div class="control-card">
+                        <h3>API Status</h3>
+                        <sl-badge variant="success" pill>Online</sl-badge>
+                        <sl-button size="small" variant="default" outline>
+                            <sl-icon name="arrow-repeat" slot="prefix"></sl-icon>
+                            Restart
+                        </sl-button>
+                    </div>
+                    
+                    <div class="control-card">
+                        <h3>Database</h3>
+                        <sl-badge variant="success" pill>Connected</sl-badge>
+                        <sl-button size="small" variant="default" outline>
+                            <sl-icon name="database" slot="prefix"></sl-icon>
+                            Backup
+                        </sl-button>
+                    </div>
+                    
+                    <div class="control-card">
+                        <h3>AI Model</h3>
+                        <sl-badge variant="success" pill>Running</sl-badge>
+                        <sl-button size="small" variant="default" outline>
+                            <sl-icon name="cpu" slot="prefix"></sl-icon>
+                            Update
+                        </sl-button>
+                    </div>
+                    
+                    <div class="control-card">
+                        <h3>Payment System</h3>
+                        <sl-badge variant="success" pill>Connected</sl-badge>
+                        <sl-button size="small" variant="default" outline>
+                            <sl-icon name="credit-card" slot="prefix"></sl-icon>
+                            Sync
+                        </sl-button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/admin.js" type="module"></script>
+</body>
+</html>

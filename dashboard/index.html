@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autopilot CLI Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">Autopilot<span>CLI</span></div>
+            <nav>
+                <a href="#" class="active"><span>📊</span> Dashboard</a>
+                <a href="#"><span>💻</span> Terminal</a>
+                <a href="#"><span>🛠️</span> Projects</a>
+                <a href="#"><span>🔌</span> Plugins</a>
+                <a href="#"><span>🧑‍💻</span> Team</a>
+                <a href="#"><span>⚙️</span> Settings</a>
+            </nav>
+            <div class="user-profile">
+                <div class="avatar">👤</div>
+                <div class="user-info">
+                    <strong>John Developer</strong>
+                    <small>john@example.com</small>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Dashboard</h1>
+                <div class="actions">
+                    <button class="btn primary">New Project</button>
+                    <div class="notification">🔔</div>
+                </div>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Commands Run</h3>
+                    <div class="value">1,248</div>
+                    <div class="trend up">↑ 12% this week</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Time Saved</h3>
+                    <div class="value">42h</div>
+                    <div class="trend up">↑ 8% this week</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Projects</h3>
+                    <div class="value">7</div>
+                    <div class="trend neutral">→ No change</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Subscription</h3>
+                    <div class="value">Pro</div>
+                    <div class="trend">Renews May 15</div>
+                </div>
+            </div>
+
+            <section class="recent-activity">
+                <h2>Recent Activity</h2>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="icon">🚀</div>
+                        <div class="details">
+                            <p><strong>autopilot deploy --prod</strong> completed successfully</p>
+                            <small>2 minutes ago</small>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="icon">🔍</div>
+                        <div class="details">
+                            <p><strong>autopilot analyze</strong> found 3 optimizations</p>
+                            <small>15 minutes ago</small>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="icon">📦</div>
+                        <div class="details">
+                            <p><strong>autopilot install</strong> added new plugin</p>
+                            <small>1 hour ago</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="quick-terminal">
+                <h2>Quick Terminal</h2>
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="window-controls">
+                            <span class="red"></span>
+                            <span class="yellow"></span>
+                            <span class="green"></span>
+                        </div>
+                        <div class="terminal-title">autopilot</div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="line"><span class="prompt">$</span> <span class="cursor">_</span></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

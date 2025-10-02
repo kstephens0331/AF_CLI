@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autopilot CLI - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --sidebar-bg: #1e293b;
+            --card-bg: #ffffff;
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            background: var(--sidebar-bg);
+            color: white;
+            padding: 2rem 1rem;
+        }
+        
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.25rem;
+            color: #e2e8f0;
+            text-decoration: none;
+            margin-bottom: 0.25rem;
+        }
+        
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: #334155;
+            color: white;
+        }
+        
+        .main-content {
+            padding: 2rem;
+            background: #f8fafc;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card h3 {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+        
+        .recent-activity {
+            background: var(--card-bg);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .activity-item {
+            display: flex;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #6366f1;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-time {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="logo">Autopilot<span>CLI</span></div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="active">📊 Dashboard</a>
+                <a href="#">💻 Terminal</a>
+                <a href="#">🚀 Projects</a>
+                <a href="#">🔌 Plugins</a>
+                <a href="#">🧑‍💻 Team</a>
+                <a href="#">⚙️ Settings</a>
+            </nav>
+        </div>
+        
+        <div class="main-content">
+            <h1>Dashboard</h1>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Commands Run</h3>
+                    <div class="value">1,248</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Time Saved</h3>
+                    <div class="value">42h</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Active Projects</h3>
+                    <div class="value">7</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Subscription</h3>
+                    <div class="value">Active</div>
+                </div>
+            </div>
+            
+            <h2>Recent Activity</h2>
+            <div class="recent-activity">
+                <div class="activity-item">
+                    <div class="activity-icon">🚀</div>
+                    <div class="activity-content">
+                        <div>Deployed project "ecommerce-store" to production</div>
+                        <div class="activity-time">10 minutes ago</div>
+                    </div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon">🔧</div>
+                    <div class="activity-content">
+                        <div>Installed plugin "database-migrator"</div>
+                        <div class="activity-time">1 hour ago</div>
+                    </div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon">💾</div>
+                    <div class="activity-content">
+                        <div>Created backup of project "blog-platform"</div>
+                        <div class="activity-time">3 hours ago</div>
+                    </div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon">🤖</div>
+                    <div class="activity-content">
+                        <div>AI suggested optimization for "checkout.js"</div>
+                        <div class="activity-time">Yesterday</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

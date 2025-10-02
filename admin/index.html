@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Autopilot CLI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="logo">Admin<span>Panel</span></div>
+            <nav>
+                <a href="#" class="active"><span>📊</span> Overview</a>
+                <a href="#"><span>👥</span> Users</a>
+                <a href="#"><span>💰</span> Subscriptions</a>
+                <a href="#"><span>📝</span> Logs</a>
+                <a href="#"><span>⚙️</span> System</a>
+                <a href="#"><span>🔒</span> Security</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Admin Dashboard</h1>
+                <div class="admin-actions">
+                    <button class="btn danger">Emergency Stop</button>
+                    <div class="admin-notification">🚨</div>
+                </div>
+            </header>
+
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <h3>Total Users</h3>
+                    <div class="value">1,427</div>
+                    <div class="trend up">↑ 32 this week</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Subscriptions</h3>
+                    <div class="value">1,103</div>
+                    <div class="trend up">↑ 17 this week</div>
+                </div>
+                <div class="stat-card">
+                    <h3>MRR</h3>
+                    <div class="value">$16,545</div>
+                    <div class="trend up">↑ $1,245 this week</div>
+                </div>
+                <div class="stat-card">
+                    <h3>System Health</h3>
+                    <div class="value">100%</div>
+                    <div class="trend neutral">All systems normal</div>
+                </div>
+            </div>
+
+            <section class="admin-tables">
+                <div class="table-container">
+                    <h2>Recent Signups</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Plan</th>
+                                <th>Joined</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>john@example.com</td>
+                                <td>Pro</td>
+                                <td>2 hours ago</td>
+                                <td><span class="badge active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>sarah@company.com</td>
+                                <td>Team</td>
+                                <td>5 hours ago</td>
+                                <td><span class="badge active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>mike@dev.io</td>
+                                <td>Pro</td>
+                                <td>1 day ago</td>
+                                <td><span class="badge trial">Trial</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-container">
+                    <h2>Recent Commands</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Command</th>
+                                <th>User</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>deploy --prod</td>
+                                <td>john@example.com</td>
+                                <td>5 min ago</td>
+                                <td><span class="badge success">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td>analyze --security</td>
+                                <td>sarah@company.com</td>
+                                <td>12 min ago</td>
+                                <td><span class="badge warning">Warning</span></td>
+                            </tr>
+                            <tr>
+                                <td>install plugin</td>
+                                <td>mike@dev.io</td>
+                                <td>25 min ago</td>
+                                <td><span class="badge error">Failed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="system-controls">
+                <h2>System Controls</h2>
+                <div class="control-grid">
+                    <div class="control-card">
+                        <h3>API Status</h3>
+                        <div class="status active">Online</div>
+                        <button class="btn small">Restart</button>
+                    </div>
+                    <div class="control-card">
+                        <h3>Database</h3>
+                        <div class="status active">Connected</div>
+                        <button class="btn small">Backup</button>
+                    </div>
+                    <div class="control-card">
+                        <h3>AI Model</h3>
+                        <div class="status active">Running</div>
+                        <button class="btn small">Update</button>
+                    </div>
+                    <div class="control-card">
+                        <h3>Payment System</h3>
+                        <div class="status active">Connected</div>
+                        <button class="btn small">Sync</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+{
+  "name": "autopilot-ui",
+  "displayName": "Autopilot UI",
+  "description": "Visual interface for the Autopilot system",
+  "version": "0.1.0",
+  "publisher": "your-name",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:autopilot-ui.start"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "autopilot-ui.start",
+        "title": "Start Autopilot UI"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "autopilot",
+          "title": "Autopilot",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "autopilot": [
+        {
+          "id": "autopilot.chat",
+          "name": "Chat"
+        },
+        {
+          "id": "autopilot.actions",
+          "name": "Actions"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.75.0",
+    "@types/node": "^16.11.7",
+    "eslint": "^8.26.0",
+    "typescript": "^4.9.4"
+  }
+}

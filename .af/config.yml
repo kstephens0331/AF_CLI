@@ -1,0 +1,8 @@
+actions:
+  shell:
+    allow:
+      - af
+      - npm
+      - git
+
+model: deepseek-ai/DeepSeek-V3
