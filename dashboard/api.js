@@ -1,31 +1,51 @@
-const express = require('express');
-const { authenticate, adminOnly } = require('./auth-system');
-const { User, Activity } = require('./models');
+// api.js (replace or merge relevant parts)
+import express from "express";
+import { signup, login, protect, restrictTo, verifyToken } from "./server/auth.js";
+import { createSubscriptionForUser } from "./payment.service.js";
+import { User, Activity } from "./models.js";
 
 const router = express.Router();
 
-// Admin endpoints
-router.get('/admin/users', authenticate, adminOnly, async (req, res) => {
-  const users = await User.find().sort({ createdAt: -1 }).limit(100);
-  res.json(users);
+// Auth
+router.post("/signup", signup);
+router.post("/login", login);
+router.get("/verify-token", protect, verifyToken);
+
+// Payments
+router.post("/create-subscription", protect, async (req, res) => {
+  try {
+    const { paymentMethodId, planId } = req.body;
+    const { id: userId } = req.user;
+    const { clientSecret, subscriptionId } = await createSubscriptionForUser(userId, paymentMethodId, planId);
+    res.json({ clientSecret, subscriptionId });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
 });
 
-router.get('/admin/stats', authenticate, adminOnly, async (req, res) => {
-  const [userCount, activeSubs] = await Promise.all([
-    User.countDocuments(),
-    User.countDocuments({ subscriptionStatus: 'active' })
-  ]);
-  
-  res.json({ userCount, activeSubs });
+// Admin: list users in grid-friendly shape
+router.get("/admin/users", protect, restrictTo("admin"), async (_req, res) => {
+  const users = await User.find().lean();
+  res.json(
+    users.map(u => ({
+      id: String(u._id),
+      email: u.email,
+      createdAt: u.createdAt,
+      status: u.subscriptionStatus || "trial",
+      plan: u.plan || "Free"
+    }))
+  );
 });
 
-// User endpoints
-router.get('/user/activity', authenticate, async (req, res) => {
-  const activities = await Activity.find({ userId: req.user.userId })
-    .sort({ timestamp: -1 })
-    .limit(20);
-  
-  res.json(activities);
+// Example stats / activity
+router.get("/admin/stats", protect, restrictTo("admin"), async (_req, res) => {
+  const totalUsers = await User.countDocuments();
+  const active = await User.countDocuments({ subscriptionStatus: "active" });
+  res.json({ totalUsers, active });
+});
+router.get("/admin/activities", protect, restrictTo("admin"), async (_req, res) => {
+  const items = await Activity.find().sort({ createdAt: -1 }).limit(50).lean();
+  res.json(items);
 });
 
-module.exports = router;
+export default router;

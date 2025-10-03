@@ -1,8 +1,15 @@
+# .af/config.yml
+root: .                       # required by schema; project root
+models:
+  default: deepseek-ai/DeepSeek-V3
+  bigPlan: meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo
 actions:
   shell:
-    allow:
-      - af
-      - npm
-      - git
-
-model: deepseek-ai/DeepSeek-V3
+    allow: [node, npm, pnpm, npx, git, af]   # safe allowlist for tools
+routing:
+  snapshotBytesThreshold: 700000
+  planFileCountThreshold: 1500
+check:                      # gives run-checks sane defaults
+  typecheck: npx tsc -p tsconfig.json --noEmit
+  lint: node -e "console.log('lint skipped')"    # replace with eslint when ready
+  test: node -e "console.log('tests skipped')"   # replace with vitest/jest when ready
