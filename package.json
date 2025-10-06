@@ -31,6 +31,7 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.74.0",
     "commander": "^11.1.0",
     "execa": "^9.6.0",
     "fast-glob": "^3.3.3",
