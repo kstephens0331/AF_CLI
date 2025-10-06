@@ -1,13 +1,32 @@
+// src/core/patcher.ts
 import fs from "node:fs";
 import path from "node:path";
 import { execa } from "execa";
 import { findRoot } from "./root.js";
+import { log } from "./logger.js";
 
 export type PatchMode = "auto" | "whole-file-only" | "hunks";
+
+// Treat “no content” / “not a unified diff” as a trivial patch
+function isTrivialUnifiedDiff(diffText: string): boolean {
+  const text = (diffText ?? "").trim();
+  if (!text) return true;
+
+  // Unified diff markers or our whole-file marker must be present
+  const hasUnifiedMarkers = /(diff --git|^---\s|^\+\+\+\s|^@@\s)/m.test(text);
+  const hasWholeFileMarker = text.includes("@@ REPLACE-WHOLE-FILE @@");
+  return !hasUnifiedMarkers && !hasWholeFileMarker;
+}
 
 export async function applyUnifiedDiff(cwd: string, diffText: string, mode: PatchMode = "auto") {
   const root = await findRoot(cwd);
   if (!root) throw new Error("No root");
+
+  // Early exit for trivial/no-op patches
+  if (isTrivialUnifiedDiff(diffText)) {
+    log.warn("No valid patch content detected — skipping git apply.");
+    return;
+  }
 
   // Always save a patch artifact
   const tmpDir = path.join(root, ".af/tmp");
@@ -29,7 +48,13 @@ export async function applyUnifiedDiff(cwd: string, diffText: string, mode: Patc
       stdio: "inherit",
       cwd: root
     });
+    log.ok("Patch applied.");
   } catch (_e) {
+    // Keep a convenient copy for inspection
+    const lastRej = path.join(root, ".af/last.patch.rej.txt");
+    fs.mkdirSync(path.dirname(lastRej), { recursive: true });
+    fs.writeFileSync(lastRej, diffText, "utf-8");
+
     const rejects = findRejects(root);
     const msg = rejects.length
       ? `Some hunks failed. Reject files:\n${rejects.map((r) => ` - ${r}`).join("\n")}`

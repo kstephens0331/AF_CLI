@@ -1,0 +1,116 @@
+{
+  "variables": [
+    {
+      "name": "NEXT_PUBLIC_SUPABASE_URL",
+      "requiredProviders": [
+        "local",
+        "github",
+        "vercel",
+        "railway"
+      ],
+      "scopes": [
+        "development",
+        "preview",
+        "production"
+      ]
+    },
+    {
+      "name": "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+      "requiredProviders": [
+        "local",
+        "github",
+        "vercel",
+        "railway"
+      ],
+      "scopes": [
+        "development",
+        "preview",
+        "production"
+      ]
+    },
+    {
+      "name": "SUPABASE_SERVICE_ROLE",
+      "requiredProviders": [
+        "local",
+        "github",
+        "vercel",
+        "railway"
+      ],
+      "scopes": [
+        "development",
+        "preview",
+        "production"
+      ]
+    },
+    {
+      "name": "TOGETHER_API_KEY",
+      "requiredProviders": [
+        "local",
+        "github",
+        "vercel",
+        "railway"
+      ],
+      "scopes": [
+        "development",
+        "preview",
+        "production"
+      ]
+    },
+    {
+      "name": "TOGETHER_MODEL",
+      "requiredProviders": [
+        "local",
+        "github",
+        "vercel",
+        "railway"
+      ],
+      "scopes": [
+        "development",
+        "preview",
+        "production"
+      ]
+    },
+    {
+      "name": "TRANSCRIBE_URL",
+      "requiredProviders": [
+        "local",
+        "github",
+        "vercel",
+        "railway"
+      ],
+      "scopes": [
+        "development",
+        "preview",
+        "production"
+      ]
+    },
+    {
+      "name": "INGESTOR_URL",
+      "requiredProviders": [
+        "local",
+        "github",
+        "vercel",
+        "railway"
+      ],
+      "scopes": [
+        "development",
+        "preview",
+        "production"
+      ]
+    },
+    {
+      "name": "NEXT_PUBLIC_BASE_URL",
+      "requiredProviders": [
+        "local",
+        "github",
+        "vercel",
+        "railway"
+      ],
+      "scopes": [
+        "development",
+        "preview",
+        "production"
+      ]
+    }
+  ]
+}

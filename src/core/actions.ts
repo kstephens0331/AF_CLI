@@ -8,13 +8,14 @@ import {
   queueProviderSync,
   isVercelLinked,
 } from "../services/env.js";
+import { applyPatchText } from "../services/patchApply.js"; // ← NEW
 
 export type ShellProviders = ("local" | "github" | "vercel" | "railway")[];
 export type VercelScopes = ("development" | "preview" | "production")[];
 
 export type PatchAction = {
   type: "patch";
-  diff: string; // unified diff expected
+  diff: string; // unified diff expected OR LLM-style *** Begin Patch
   description?: string;
 };
 
@@ -67,7 +68,14 @@ export type EditFileAction = {
   description?: string;
 };
 
-export type Action = PatchAction | ExecAction | CheckAction | EnvRequestAction | ReadFileAction | WriteFileAction | EditFileAction;
+export type Action =
+  | PatchAction
+  | ExecAction
+  | CheckAction
+  | EnvRequestAction
+  | ReadFileAction
+  | WriteFileAction
+  | EditFileAction;
 
 export interface ExecuteResult {
   ok: boolean;
@@ -86,20 +94,27 @@ export interface ExecutorCfg {
 }
 
 function mergeAllowlist(cfg: ExecutorCfg): string[] {
-  const a = Array.isArray(cfg?.actions?.shell?.allow) ? cfg.actions.shell.allow : [];
+  const a = Array.isArray(cfg?.actions?.shell?.allow)
+    ? cfg.actions.shell.allow
+    : [];
   const b = Array.isArray(cfg?.shellAllowlist) ? cfg.shellAllowlist : [];
   return Array.from(new Set([...a, ...b]));
 }
 
-/** Apply unified diff using `git apply` for reliability. */
+/** Apply either an LLM-style patch (*** Begin Patch) or a unified diff via git apply. */
 async function applyUnifiedDiff(cwd: string, diff: string): Promise<void> {
-  // ensure repo init so `git apply` works well with CRLF, etc.
+  // NEW: if the model returned our LLM patch format, use the safe applier
+  if (diff.includes("*** Begin Patch")) {
+    await applyPatchText(diff, cwd);
+    return;
+  }
+
+  // existing unified-diff path — ensure repo init so `git apply` behaves
   if (!fs.existsSync(path.join(cwd, ".git"))) {
     await execa("git init", { cwd, shell: true });
     await execa("git", ["checkout", "-B", "main"], { cwd });
   }
 
-  // try apply — if it fails, write .rej to help debugging
   try {
     await execa("git", ["apply", "--whitespace=nowarn", "-p0"], {
       cwd,
@@ -120,7 +135,12 @@ async function applyUnifiedDiff(cwd: string, diff: string): Promise<void> {
 function normalizeEnvRequestPayload(a: EnvRequestAction): EnvVarRequest[] {
   let names: string[] = [];
   const providers: ShellProviders =
-    (a.providers as ShellProviders) ?? ["local", "github", "vercel", "railway"];
+    (a.providers as ShellProviders) ?? [
+      "local",
+      "github",
+      "vercel",
+      "railway",
+    ];
   const scopes: VercelScopes =
     (a.scopes as VercelScopes) ?? ["development", "preview", "production"];
 
@@ -138,7 +158,8 @@ function normalizeEnvRequestPayload(a: EnvRequestAction): EnvVarRequest[] {
     names = a.names;
   }
 
-  if (!names.length) throw new Error("env_request missing variables[] or names[]");
+  if (!names.length)
+    throw new Error("env_request missing variables[] or names[]");
   return names.map((name) => ({
     name,
     requiredProviders: providers,
@@ -158,20 +179,31 @@ async function handleEnvRequest(
 }
 
 /** Try to run a default check (build/typecheck) if requested */
-async function runDefaultCheck(cwd: string, paths?: string[]): Promise<void> {
+async function runDefaultCheck(
+  cwd: string,
+  paths?: string[]
+): Promise<void> {
   const roots = (paths?.length ? paths : [cwd]).filter(Boolean);
   for (const root of roots) {
     const pkg = path.join(root, "package.json");
     if (fs.existsSync(pkg)) {
       const json = JSON.parse(fs.readFileSync(pkg, "utf8"));
       if (json?.scripts?.build) {
-        await execa("npm run build", { cwd: root, stdio: "inherit", shell: true });
+        await execa("npm run build", {
+          cwd: root,
+          stdio: "inherit",
+          shell: true,
+        });
       }
     } else {
       // Try TS check if tsconfig exists
       const tsconfig = path.join(root, "tsconfig.json");
       if (fs.existsSync(tsconfig)) {
-        await execa("tsc -p tsconfig.json", { cwd: root, stdio: "inherit", shell: true });
+        await execa("tsc -p tsconfig.json", {
+          cwd: root,
+          stdio: "inherit",
+          shell: true,
+        });
       }
     }
   }
@@ -191,7 +223,9 @@ export async function executeActions(
       switch (a.type) {
         case "patch": {
           if (!a.diff?.trim()) throw new Error("patch.diff is empty");
-          console.log(a.description ? `✍️  ${a.description}` : "✍️  Applying patch");
+          console.log(
+            a.description ? `✍️  ${a.description}` : "✍️  Applying patch"
+          );
           await applyUnifiedDiff(cwd, a.diff);
           break;
         }
@@ -203,7 +237,11 @@ export async function executeActions(
             );
           }
           console.log(`$ ${a.cmd}`);
-          await execa(a.cmd, { stdio: "inherit", shell: true, cwd: a.cwd ?? cwd });
+          await execa(a.cmd, {
+            stdio: "inherit",
+            shell: true,
+            cwd: a.cwd ?? cwd,
+          });
           break;
         }
         case "check": {
@@ -214,7 +252,9 @@ export async function executeActions(
         case "env_request": {
           const res = await handleEnvRequest(a, cwd);
           console.log(
-            `🔐 Env: added ${res.added.length}, kept ${res.kept.length}. Vercel linked: ${res.vercelLinked ? "yes" : "no"}`
+            `🔐 Env: added ${res.added.length}, kept ${res.kept.length}. Vercel linked: ${
+              res.vercelLinked ? "yes" : "no"
+            }`
           );
           break;
         }
