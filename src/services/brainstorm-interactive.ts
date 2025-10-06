@@ -91,7 +91,7 @@ export async function startInteractiveBrainstorm(opts: BrainstormInteractiveOpti
   const sessionName = opts.session || "default";
   const model = cfg.routing?.planModel ?? cfg.model ?? "meta-llama/Llama-3.3-70B-Instruct-Turbo";
 
-  let sess = await loadBrainSession(root, sessionName);
+  const sess = await loadBrainSession(root, sessionName);
 
   const rl = readline.createInterface({
     input: process.stdin,

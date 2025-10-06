@@ -31,7 +31,7 @@ export const brainstormCommand = new Command("brainstorm")
     const cfg = readCfg(root);
     const name = opts.new || opts.session;
 
-    let sess = await loadBrainSession(root, name);
+    const sess = await loadBrainSession(root, name);
     const text = message.join(" ").trim();
 
     if (!text) {

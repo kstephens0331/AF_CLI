@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import fsp from "node:fs/promises";
 import path from "node:path";
-import os from "node:os";
+import _os from "node:os";
 import { execa } from "execa";
 import yaml from "js-yaml";
 
@@ -119,7 +119,7 @@ export async function scaffoldNextApp(cwd: string, opts: ScaffoldOptions = {}) {
   const cnaFlags = opts.cnaFlags ?? DEFAULT_FLAGS;
 
   // Preferred location from spec (if present)
-  let frontendRoot: string | undefined = spec.frontendRoot;
+  const frontendRoot: string | undefined = spec.frontendRoot;
 
   // Determine strategy
   const strategy: DirStrategy = (() => {

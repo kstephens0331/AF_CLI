@@ -15,7 +15,7 @@ export const daemonCommand = new Command("daemon")
     const interval = Number(opts.interval) || 1500;
 
     log.ok("Daemon started. Press CTRL+C to stop.");
-    // eslint-disable-next-line no-constant-condition
+     
     while (true) {
       const tasks = await listTasks(root);
       const next = tasks.find((t) => t.status === "queued");

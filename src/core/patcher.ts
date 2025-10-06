@@ -29,7 +29,7 @@ export async function applyUnifiedDiff(cwd: string, diffText: string, mode: Patc
       stdio: "inherit",
       cwd: root
     });
-  } catch (e) {
+  } catch (_e) {
     const rejects = findRejects(root);
     const msg = rejects.length
       ? `Some hunks failed. Reject files:\n${rejects.map((r) => ` - ${r}`).join("\n")}`

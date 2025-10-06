@@ -19,6 +19,7 @@ import { brainstormCommand } from "../commands/brainstorm.js";
 import registerImplementCommand from "../commands/implement.js";
 import { talkCommand } from "../commands/talk.js";
 import { codeCommand } from "../commands/code.js";
+import { doctorCommand } from "../commands/doctor.js";
 
 const program = new Command();
 program
@@ -52,5 +53,6 @@ program.addCommand(brainstormCommand);
 registerImplementCommand(program);
 program.addCommand(talkCommand);
 program.addCommand(codeCommand);
+program.addCommand(doctorCommand);
 
 program.parseAsync(process.argv);

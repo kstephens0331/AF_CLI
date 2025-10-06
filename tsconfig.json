@@ -10,7 +10,7 @@
     "resolveJsonModule": true,
     "verbatimModuleSyntax": true,
     "esModuleInterop": true,
-    "types": ["node"]
+    "types": ["node", "vitest", "js-yaml", "vscode"]
   },
   "include": ["src/**/*.ts", "types/**/*.d.ts"],
   "exclude": ["node_modules","dist",".af",".next","build","vscode-extension/**","user-dashboard/**"]

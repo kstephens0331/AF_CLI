@@ -119,9 +119,9 @@ async function applyUnifiedDiff(cwd: string, diff: string): Promise<void> {
 /** Normalize env_request payload to a single list of variables */
 function normalizeEnvRequestPayload(a: EnvRequestAction): EnvVarRequest[] {
   let names: string[] = [];
-  let providers: ShellProviders =
+  const providers: ShellProviders =
     (a.providers as ShellProviders) ?? ["local", "github", "vercel", "railway"];
-  let scopes: VercelScopes =
+  const scopes: VercelScopes =
     (a.scopes as VercelScopes) ?? ["development", "preview", "production"];
 
   if (Array.isArray(a.variables) && a.variables.length) {

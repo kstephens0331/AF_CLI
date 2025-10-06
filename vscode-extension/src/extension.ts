@@ -1,10 +1,17 @@
-import * as vscode from 'vscode';
-import { WebviewPanel } from 'vscode';
+import * as vscode from "vscode";
+
+/** Messages the panel (webview) can post back to the extension */
+type PanelMessage =
+  | { command: "sendMessage"; text: string }
+  | { command: "executeAction"; actionId?: string; payload?: unknown };
+
+/** Messages the chat view can post back to the extension */
+type ChatViewMessage = { type: "sendMessage"; value: string };
 
 export function activate(context: vscode.ExtensionContext) {
   // Register the command to open the UI
   context.subscriptions.push(
-    vscode.commands.registerCommand('autopilot-ui.start', () => {
+    vscode.commands.registerCommand("autopilot-ui.start", () => {
       AutopilotUI.createOrShow(context);
     })
   );
@@ -12,14 +19,14 @@ export function activate(context: vscode.ExtensionContext) {
   // Create the views
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
-      'autopilot.chat',
+      "autopilot.chat",
       new ChatViewProvider(context)
     )
   );
 
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
-      'autopilot.actions',
+      "autopilot.actions",
       new ActionsViewProvider(context)
     )
   );
@@ -27,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 class AutopilotUI {
   public static currentPanel: AutopilotUI | undefined;
-  private readonly _panel: WebviewPanel;
+  private readonly _panel: vscode.WebviewPanel;
   private _disposables: vscode.Disposable[] = [];
 
   public static createOrShow(context: vscode.ExtensionContext) {
@@ -40,33 +47,36 @@ class AutopilotUI {
       return;
     }
 
-    const panel = new AutopilotUI(
+    // Create and store the singleton instead of an unused local var
+    AutopilotUI.currentPanel = new AutopilotUI(
       context,
       vscode.window.createWebviewPanel(
-        'autopilot',
-        'Autopilot',
-        column || vscode.ViewColumn.One,
+        "autopilot",
+        "Autopilot",
+        column ?? vscode.ViewColumn.One,
         {
           enableScripts: true,
-          retainContextWhenHidden: true
+          retainContextWhenHidden: true,
         }
       )
     );
   }
 
-  private constructor(context: vscode.ExtensionContext, panel: WebviewPanel) {
+  private constructor(context: vscode.ExtensionContext, panel: vscode.WebviewPanel) {
     this._panel = panel;
     this._panel.webview.html = this._getHtmlForWebview();
-    
-    // Handle messages from the webview
+
+    // in AutopilotUI constructor:
     this._panel.webview.onDidReceiveMessage(
-      message => {
+      (message: PanelMessage) => {
         switch (message.command) {
-          case 'sendMessage':
-            // Handle chat message
+          case "sendMessage":
+            // TODO: handle chat message from webview
+            // message.text
             break;
-          case 'executeAction':
-            // Handle action execution
+          case "executeAction":
+            // TODO: handle action execution
+            // message.actionId / message.payload
             break;
         }
       },
@@ -123,7 +133,7 @@ class AutopilotUI {
         </div>
         <script>
           const vscode = acquireVsCodeApi();
-          
+
           document.getElementById('send-button').addEventListener('click', () => {
             const input = document.getElementById('message-input');
             vscode.postMessage({
@@ -132,7 +142,7 @@ class AutopilotUI {
             });
             input.value = '';
           });
-          
+
           // Handle messages from extension
           window.addEventListener('message', event => {
             const message = event.data;
@@ -142,7 +152,7 @@ class AutopilotUI {
                 break;
             }
           });
-          
+
           function addMessage(text, isUser) {
             const messages = document.getElementById('messages');
             const messageElement = document.createElement('div');
@@ -162,9 +172,7 @@ class AutopilotUI {
     this._panel.dispose();
     while (this._disposables.length) {
       const x = this._disposables.pop();
-      if (x) {
-        x.dispose();
-      }
+      if (x) x.dispose();
     }
   }
 }
@@ -175,15 +183,16 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
   public resolveWebviewView(webviewView: vscode.WebviewView) {
     webviewView.webview.options = {
       enableScripts: true,
-      localResourceRoots: [this.context.extensionUri]
+      localResourceRoots: [this.context.extensionUri],
     };
 
     webviewView.webview.html = this._getHtmlForWebview();
 
-    webviewView.webview.onDidReceiveMessage(data => {
+    webviewView.webview.onDidReceiveMessage((data: ChatViewMessage) => {
       switch (data.type) {
-        case 'sendMessage':
-          // Handle chat message
+        case "sendMessage":
+          // TODO: handle chat message from chat view
+          // data.value
           break;
       }
     });
@@ -208,7 +217,6 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
         </div>
         <script>
           const vscode = acquireVsCodeApi();
-          
           document.getElementById('send-button').addEventListener('click', () => {
             const input = document.getElementById('message-input');
             vscode.postMessage({
@@ -230,7 +238,7 @@ class ActionsViewProvider implements vscode.WebviewViewProvider {
   public resolveWebviewView(webviewView: vscode.WebviewView) {
     webviewView.webview.options = {
       enableScripts: true,
-      localResourceRoots: [this.context.extensionUri]
+      localResourceRoots: [this.context.extensionUri],
     };
 
     webviewView.webview.html = this._getHtmlForWebview();

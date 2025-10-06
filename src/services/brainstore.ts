@@ -42,7 +42,7 @@ export async function saveBrainSession(cwd: string, sess: { name: string; messag
   return p;
 }
 
-const BoardSchema = {
+const _BoardSchema = {
   type: "object",
   properties: {
     summary: { type: "string" },
@@ -93,7 +93,7 @@ export async function buildBoardFromMessages(opts: {
   let board: BrainBoard;
   try {
     board = JSON.parse(String(json).trim().replace(/^```json\s*/i, "").replace(/```$/i, "")) as BrainBoard;
-  } catch (e) {
+  } catch (_e) {
     // ultra-safe fallback: generate a minimal board
     board = {
       summary: "Draft",

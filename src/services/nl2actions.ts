@@ -48,7 +48,7 @@ function exists(fp: string): boolean {
   }
 }
 
-function readJson<T = any>(fp: string): T | null {
+function _readJson<T = any>(fp: string): T | null {
   try {
     return JSON.parse(fs.readFileSync(fp, "utf8"));
   } catch {
@@ -104,7 +104,7 @@ function mkAddFile(rel: string, content: string): string {
   ].join("\n");
 }
 
-function mkUpdateFile(rel: string, before: string, after: string): string {
+function _mkUpdateFile(rel: string, before: string, after: string): string {
   // minimal unified diff (true hunk). We’ll replace whole file content safely.
   const old = before.replace(/\r\n/g, "\n").split("\n");
   const neu = after.replace(/\r\n/g, "\n").split("\n");
@@ -120,7 +120,7 @@ function mkUpdateFile(rel: string, before: string, after: string): string {
   return [...header, ...diffLines, "*** End Patch"].join("\n");
 }
 
-function ensureArray<T>(x: T | T[] | undefined): T[] {
+function _ensureArray<T>(x: T | T[] | undefined): T[] {
   if (!x) return [];
   return Array.isArray(x) ? x : [x];
 }

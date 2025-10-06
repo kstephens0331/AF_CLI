@@ -138,7 +138,7 @@ Always explain what you're doing and provide context for your actions.` : "")
 
     try {
       let continueLoop = true;
-      let maxIterations = 10; // prevent infinite loops
+      const maxIterations = 10; // prevent infinite loops
       let iteration = 0;
 
       while (continueLoop && iteration < maxIterations) {

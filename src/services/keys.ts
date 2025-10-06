@@ -4,7 +4,7 @@ import fs from "node:fs";
 let keytar: typeof import("keytar") | null = null;
 try {
   // optional dep — may fail on some systems; we handle that
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+   
   // @ts-ignore
   keytar = await import("keytar");
 } catch {

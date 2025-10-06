@@ -7,7 +7,7 @@ import { togetherChatCompletion } from "./llm.js";
 import { executeActions, type Action } from "../core/actions.js";
 import { findRoot } from "../core/root.js";
 import { listProjectFiles } from "../core/sandbox.js";
-import { Spinner } from "../utils/spinner.js";
+import { Spinner as _Spinner } from "../utils/spinner.js";
 
 /**
  * We support the flags your command files pass, even if this simple
@@ -81,7 +81,7 @@ function parseActions(text: string): Action[] {
           actions.push(action as Action);
         }
       }
-    } catch (err) {
+    } catch (_err) {
       // Silently skip invalid JSON blocks
     }
   }
@@ -91,7 +91,7 @@ function parseActions(text: string): Action[] {
 
 export async function startChatRepl(opts: ReplOptions = {}): Promise<void> {
   // Visual theme configuration
-  const visualTheme = {
+  const _visualTheme = {
     autopilot: {
       spinner: {
         style: opts.extreme ? 'progress' : 'dots',
