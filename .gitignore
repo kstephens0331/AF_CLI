@@ -6,3 +6,4 @@ dist
 .af/tmp
 .af/staging
 .env
+.env.local
