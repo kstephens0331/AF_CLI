@@ -1,0 +1,18 @@
+{
+  "/api/blocks/current/route": "app/api/blocks/current/route.js",
+  "/api/health/route": "app/api/health/route.js",
+  "/api/coach/next/route": "app/api/coach/next/route.js",
+  "/api/lecture/summarize/route": "app/api/lecture/summarize/route.js",
+  "/api/directqs/batch/route": "app/api/directqs/batch/route.js",
+  "/api/coach/answer/route": "app/api/coach/answer/route.js",
+  "/api/srs/bootstrap/route": "app/api/srs/bootstrap/route.js",
+  "/api/lecture/report/route": "app/api/lecture/report/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/lecture/upload/route": "app/api/lecture/upload/route.js",
+  "/api/material/generate/route": "app/api/material/generate/route.js",
+  "/api/srs/review/route": "app/api/srs/review/route.js",
+  "/api/srs/next/route": "app/api/srs/next/route.js",
+  "/api/material/upload/route": "app/api/material/upload/route.js",
+  "/api/vignettes/batch/route": "app/api/vignettes/batch/route.js",
+  "/page": "app/page.js"
+}

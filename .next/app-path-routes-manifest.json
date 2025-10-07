@@ -1,0 +1,18 @@
+{
+  "/api/blocks/current/route": "/api/blocks/current",
+  "/api/health/route": "/api/health",
+  "/api/coach/next/route": "/api/coach/next",
+  "/api/lecture/summarize/route": "/api/lecture/summarize",
+  "/api/directqs/batch/route": "/api/directqs/batch",
+  "/api/coach/answer/route": "/api/coach/answer",
+  "/api/srs/bootstrap/route": "/api/srs/bootstrap",
+  "/api/lecture/report/route": "/api/lecture/report",
+  "/_not-found/page": "/_not-found",
+  "/api/lecture/upload/route": "/api/lecture/upload",
+  "/api/material/generate/route": "/api/material/generate",
+  "/api/srs/review/route": "/api/srs/review",
+  "/api/srs/next/route": "/api/srs/next",
+  "/api/material/upload/route": "/api/material/upload",
+  "/api/vignettes/batch/route": "/api/vignettes/batch",
+  "/page": "/"
+}

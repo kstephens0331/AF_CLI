@@ -11,9 +11,38 @@
     "verbatimModuleSyntax": true,
     "esModuleInterop": true,
     "jsx": "preserve",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "types": ["node", "vitest", "js-yaml", "vscode"]
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "node",
+      "vitest",
+      "js-yaml",
+      "vscode"
+    ],
+    "allowJs": true,
+    "noEmit": true,
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["src/**/*.ts", "types/**/*.d.ts"],
-  "exclude": ["node_modules","dist",".af",".next","build","vscode-extension/**","user-dashboard/**"]
+  "include": [
+    "src/**/*.ts",
+    "types/**/*.d.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".af",
+    ".next",
+    "build",
+    "vscode-extension/**",
+    "user-dashboard/**"
+  ]
 }
