@@ -1,3 +1,4 @@
+// src/services/preflight.ts
 import fs from "node:fs";
 import path from "node:path";
 import { execa, execaCommand } from "execa";
@@ -33,20 +34,72 @@ const installDocs: Record<string, string> = {
   git:      "https://git-scm.com/downloads",
   pnpm:     "npm i -g pnpm",
   vercel:   "npm i -g vercel",
-  supabase: "npm i -g supabase",
+  // Installing via npm is not supported; point to official instructions.
+  supabase: "https://supabase.com/docs/guides/cli/getting-started",
   railway:  "npm i -g @railway/cli",
 };
 
+/** Escape a string for safe use inside a RegExp */
+function escapeRegex(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function fileExists(p: string): boolean {
+  try {
+    return fs.existsSync(p);
+  } catch {
+    return false;
+  }
+}
+
+/** Read KEY from .env.local, then .env, then process.env */
+function getEnvFromFilesOrProcess(cwd: string, key: string): string | undefined {
+  // 1) .env.local
+  const envLocalPath = path.join(cwd, ".env.local");
+  if (fileExists(envLocalPath)) {
+    try {
+      const text = fs.readFileSync(envLocalPath, "utf8");
+      const re = new RegExp(
+        `^\\s*${escapeRegex(key)}\\s*=\\s*("?)([^\\n\\r"]*)\\1\\s*$`,
+        "m",
+      );
+      const m = text.match(re);
+      if (m?.[2]) return m[2].trim();
+    } catch { /* ignore */ }
+  }
+
+  // 2) .env
+  const envPath = path.join(cwd, ".env");
+  if (fileExists(envPath)) {
+    try {
+      const text = fs.readFileSync(envPath, "utf8");
+      const re = new RegExp(
+        `^\\s*${escapeRegex(key)}\\s*=\\s*("?)([^\\n\\r"]*)\\1\\s*$`,
+        "m",
+      );
+      const m = text.match(re);
+      if (m?.[2]) return m[2].trim();
+    } catch { /* ignore */ }
+  }
+
+  // 3) process.env
+  const fromProc = process.env[key];
+  if (fromProc && fromProc.trim()) return fromProc.trim();
+
+  return undefined;
+}
+
 /**
- * Run `<bin> --version` with a fallback that is robust on Windows
- * when the binary path contains spaces (e.g. `C:\\Program Files\\...`).
+ * Run `<bin> --version` with a Windows-friendly fallback (quoted paths).
  */
-export async function versionSafe(bin: string, args: string[] = ["--version"]): Promise<string | null> {
+export async function versionSafe(
+  bin: string,
+  args: string[] = ["--version"]
+): Promise<string | null> {
   try {
     const { stdout } = await execa(bin, args);
     return stdout.trim();
   } catch {
-    // Fallback: shell invocation handles quoted/spacey paths better on Windows
     try {
       const { stdout } = await execaCommand([bin, ...args].join(" "), { shell: true });
       return stdout.trim();
@@ -97,24 +150,24 @@ export async function checkTools(only?: string[]): Promise<ToolCheck[]> {
     });
   }
 
-  // 3) TOGETHER_API_KEY presence/shape (informational)
-  if (!only || names.has("TOGETHER_API_KEY") || names.size === 0) {
-    const key = process.env.TOGETHER_API_KEY;
-    const ok = !!key && /^sk_/.test(key);
+  // 3) TOGETHER_API_KEY presence (informational — no 'sk_' requirement)
+  if (!only || names.has("together_api_key") || names.size === 0) {
+    const key = getEnvFromFilesOrProcess(process.cwd(), "TOGETHER_API_KEY");
+    const ok = typeof key === "string" && key.trim().length > 0;
     results.push({
       name: "TOGETHER_API_KEY",
       ok,
       required: false,
-      message: ok ? undefined : "Set TOGETHER_API_KEY (starts with sk_)",
+      message: ok
+        ? undefined
+        : "Set TOGETHER_API_KEY in .env.local (or .env). Together keys don’t use an 'sk_' prefix.",
     });
   }
 
   return results;
 }
 
-/**
- * Ensure required tools are available; throw with helpful install hints if not.
- */
+/** Ensure required tools are available; throw with helpful install hints if not. */
 export async function requireTools(names: string[]): Promise<void> {
   const set = new Set(names.map(s => s.toLowerCase()));
   const subset = TOOLS.filter(t => set.has(t.name));
