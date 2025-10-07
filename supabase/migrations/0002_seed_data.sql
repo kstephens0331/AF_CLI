@@ -1,0 +1,4 @@
+-- supabase/seed.sql
+-- (Optional) example inserts (commented for safety)
+-- insert into public.blocks (user_id, name, start_date, end_date)
+-- values ('00000000-0000-0000-0000-000000000000','Example 8-week block', now()::date, (now() + interval '56 days')::date);

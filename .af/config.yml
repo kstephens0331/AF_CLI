@@ -1,8 +1,8 @@
 # .af/config.yml
 root: .                       # required by schema; project root
 models:
-  default: deepseek-ai/DeepSeek-V3
-  bigPlan: meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo
+  default: Qwen/Qwen2.5-Coder-32B-Instruct
+  bigPlan: deepseek-ai/DeepSeek-V3
 actions:
   shell:
     allow: [node, npm, pnpm, npx, git, af]   # safe allowlist for tools

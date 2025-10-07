@@ -8,14 +8,19 @@ import {
   queueProviderSync,
   isVercelLinked,
 } from "../services/env.js";
-import { applyPatchText } from "../services/patchApply.js"; // ← NEW
+import { applyPatchText } from "../services/patchApply.js";
+import {
+  getExistingEnvValue,
+  promptForEnvValues,
+  writeManyEnvVars,
+} from "../services/envPrompt.js";
 
 export type ShellProviders = ("local" | "github" | "vercel" | "railway")[];
 export type VercelScopes = ("development" | "preview" | "production")[];
 
 export type PatchAction = {
   type: "patch";
-  diff: string; // unified diff expected OR LLM-style *** Begin Patch
+  diff: string; // unified diff OR LLM-style *** Begin Patch
   description?: string;
 };
 
@@ -103,13 +108,13 @@ function mergeAllowlist(cfg: ExecutorCfg): string[] {
 
 /** Apply either an LLM-style patch (*** Begin Patch) or a unified diff via git apply. */
 async function applyUnifiedDiff(cwd: string, diff: string): Promise<void> {
-  // NEW: if the model returned our LLM patch format, use the safe applier
+  // LLM patch format → use our safer applier
   if (diff.includes("*** Begin Patch")) {
     await applyPatchText(diff, cwd);
     return;
   }
 
-  // existing unified-diff path — ensure repo init so `git apply` behaves
+  // unified-diff path — ensure repo init so `git apply` behaves
   if (!fs.existsSync(path.join(cwd, ".git"))) {
     await execa("git init", { cwd, shell: true });
     await execa("git", ["checkout", "-B", "main"], { cwd });
@@ -135,12 +140,7 @@ async function applyUnifiedDiff(cwd: string, diff: string): Promise<void> {
 function normalizeEnvRequestPayload(a: EnvRequestAction): EnvVarRequest[] {
   let names: string[] = [];
   const providers: ShellProviders =
-    (a.providers as ShellProviders) ?? [
-      "local",
-      "github",
-      "vercel",
-      "railway",
-    ];
+    (a.providers as ShellProviders) ?? ["local", "github", "vercel", "railway"];
   const scopes: VercelScopes =
     (a.scopes as VercelScopes) ?? ["development", "preview", "production"];
 
@@ -179,34 +179,30 @@ async function handleEnvRequest(
 }
 
 /** Try to run a default check (build/typecheck) if requested */
-async function runDefaultCheck(
-  cwd: string,
-  paths?: string[]
-): Promise<void> {
+async function runDefaultCheck(cwd: string, paths?: string[]): Promise<void> {
   const roots = (paths?.length ? paths : [cwd]).filter(Boolean);
   for (const root of roots) {
     const pkg = path.join(root, "package.json");
     if (fs.existsSync(pkg)) {
       const json = JSON.parse(fs.readFileSync(pkg, "utf8"));
       if (json?.scripts?.build) {
-        await execa("npm run build", {
-          cwd: root,
-          stdio: "inherit",
-          shell: true,
-        });
+        await execa("npm run build", { cwd: root, stdio: "inherit", shell: true });
       }
     } else {
       // Try TS check if tsconfig exists
       const tsconfig = path.join(root, "tsconfig.json");
       if (fs.existsSync(tsconfig)) {
-        await execa("tsc -p tsconfig.json", {
-          cwd: root,
-          stdio: "inherit",
-          shell: true,
-        });
+        await execa("tsc -p tsconfig.json", { cwd: root, stdio: "inherit", shell: true });
       }
     }
   }
+}
+
+function maskValue(v: string) {
+  if (!v) return v;
+  const s = String(v);
+  if (s.length <= 6) return "****";
+  return `${s.slice(0, 3)}…${s.slice(-2)}`;
 }
 
 export async function executeActions(
@@ -223,9 +219,7 @@ export async function executeActions(
       switch (a.type) {
         case "patch": {
           if (!a.diff?.trim()) throw new Error("patch.diff is empty");
-          console.log(
-            a.description ? `✍️  ${a.description}` : "✍️  Applying patch"
-          );
+          console.log(a.description ? `✍️  ${a.description}` : "✍️  Applying patch");
           await applyUnifiedDiff(cwd, a.diff);
           break;
         }
@@ -237,11 +231,7 @@ export async function executeActions(
             );
           }
           console.log(`$ ${a.cmd}`);
-          await execa(a.cmd, {
-            stdio: "inherit",
-            shell: true,
-            cwd: a.cwd ?? cwd,
-          });
+          await execa(a.cmd, { stdio: "inherit", shell: true, cwd: a.cwd ?? cwd });
           break;
         }
         case "check": {
@@ -250,12 +240,34 @@ export async function executeActions(
           break;
         }
         case "env_request": {
+          // merge placeholders & queue provider sync
           const res = await handleEnvRequest(a, cwd);
           console.log(
-            `🔐 Env: added ${res.added.length}, kept ${res.kept.length}. Vercel linked: ${
-              res.vercelLinked ? "yes" : "no"
-            }`
+            `🔐 Env: added ${res.added.length}, kept ${res.kept.length}. Vercel linked: ${res.vercelLinked ? "yes" : "no"}`
           );
+
+          // determine exactly which vars are still missing
+          const wanted = normalizeEnvRequestPayload(a);
+          const missing: string[] = [];
+          for (const v of wanted) {
+            const current = getExistingEnvValue(cwd, v.name);
+            if (!current || String(current).trim() === "") {
+              missing.push(v.name);
+            }
+          }
+
+          if (missing.length) {
+            console.log(`⛔ Missing env value(s): ${missing.join(", ")}`);
+            const answers = await promptForEnvValues(missing, { maskLikeSecrets: true });
+            const envPath = writeManyEnvVars(cwd, answers);
+            const rel = path.relative(cwd, envPath);
+            const masked = Object.fromEntries(
+              Object.entries(answers).map(([k, v]) => [k, maskValue(v)])
+            );
+            console.log(`✅ Updated ${rel} with ${missing.length} value(s):`, masked);
+          } else {
+            console.log("✅ All requested env vars already set.");
+          }
           break;
         }
         case "read_file": {
