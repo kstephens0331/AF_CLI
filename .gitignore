@@ -7,3 +7,4 @@ dist
 .af/staging
 .env
 .env.local
+.vercel

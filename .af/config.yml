@@ -1,11 +1,11 @@
 # .af/config.yml
-root: .                       # required by schema; project root
+root: .
 models:
   default: Qwen/Qwen2.5-Coder-32B-Instruct
   bigPlan: deepseek-ai/DeepSeek-V3
 actions:
   shell:
-    allow: [node, npm, pnpm, npx, git, af]   # safe allowlist for tools
+    allow: [node, npm, pnpm, npx, git, af, vercel, supabase, railway]
 routing:
   snapshotBytesThreshold: 700000
   planFileCountThreshold: 1500
@@ -13,3 +13,8 @@ check:
   typecheck: npx tsc -p tsconfig.json --noEmit
   lint: npx eslint "src/**/*.ts" "vscode-extension/src/**/*.ts"
   test: npx vitest run --reporter=dot --coverage
+deploy:
+  vercel: true
+  supabase: true
+  railway: false
+
