@@ -10,6 +10,8 @@
     "resolveJsonModule": true,
     "verbatimModuleSyntax": true,
     "esModuleInterop": true,
+    "jsx": "preserve",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "types": ["node", "vitest", "js-yaml", "vscode"]
   },
   "include": ["src/**/*.ts", "types/**/*.d.ts"],
